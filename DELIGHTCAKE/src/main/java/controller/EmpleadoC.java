@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package controller;
 
 import dao.EmpleadoImpl;
@@ -11,10 +16,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import model.Empleado;
 import lombok.Data;
-import model.Cliente;
-import org.primefaces.component.export.ExcelOptions;
-import org.primefaces.component.export.PDFOptions;
-import org.primefaces.component.export.PDFOrientationType;
 
 @Data
 
@@ -30,14 +31,11 @@ public class EmpleadoC implements Serializable {
     private EmpleadoImpl dao;
     private List<Empleado> lstEmpleado;
     private int tipo = 1;
-    private PDFOptions pdf;
-    private ExcelOptions xls;
 
     public EmpleadoC() {
         empleado = new Empleado();
         dao = new EmpleadoImpl();
         lstEmpleado = new ArrayList<>();
-        opcionesPersonalizacion();
     }
 
     public void registrar() throws Exception {
@@ -67,20 +65,10 @@ public class EmpleadoC implements Serializable {
         try {
             dao.eliminar(empleado);
             listar();
+            limpiar();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Eliminado", "Eliminado con éxito"));
         } catch (Exception e) {
             System.out.println("Error en eliminar ProductoC/eliminar: " + e.getMessage());
-        }
-    }
-
-    public void restaurar() throws Exception {
-        try {
-            dao.restaurar(empleado);
-            listar();
-            limpiar();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Restaurado", "Restaurado con éxito"));
-        } catch (Exception e) {
-            System.out.println("Error en eliminar EmpleadoC/restaurar: " + e.getMessage());
         }
     }
 
@@ -88,31 +76,12 @@ public class EmpleadoC implements Serializable {
         try {
             lstEmpleado = dao.listarTodos(tipo);
         } catch (Exception e) {
-            System.out.println("Error en restaurar EmpleadoC/modificar: " + e.getMessage());
+            System.out.println("Error en eliminar EmpleadoC/modificar: " + e.getMessage());
         }
     }
-
-    public void limpiar() {
-        empleado = new Empleado();
-    }
     
-    public void opcionesPersonalizacion() {
-        xls = new ExcelOptions();
-        xls.setFacetBgColor("#19C7FF");
-        xls.setFacetFontSize("10");
-        xls.setFacetFontColor("#FFFFFF");
-        xls.setFacetFontStyle("BOLD");
-        xls.setCellFontColor("#000000");
-        xls.setCellFontSize("8");
-        xls.setFontName("Verdana");
-
-        pdf = new PDFOptions();
-        pdf.setFacetBgColor("#19C7FF");
-        pdf.setFacetFontColor("#000000");
-        pdf.setFacetFontStyle("BOLD");
-        pdf.setCellFontSize("12");
-        pdf.setFontName("Courier");
-        pdf.setOrientation(PDFOrientationType.LANDSCAPE);
+    public void limpiar(){
+        empleado = new Empleado();
     }
 
     @PostConstruct

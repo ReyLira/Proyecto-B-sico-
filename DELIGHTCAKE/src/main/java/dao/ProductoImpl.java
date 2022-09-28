@@ -3,7 +3,6 @@ package dao;
 import java.sql.PreparedStatement;
 import java.util.List;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import model.Producto;
 
@@ -63,39 +62,17 @@ public class ProductoImpl extends Conexion implements ICRUD<Producto> {
             System.out.println("Error en ProductoImpl/eliminar: " + e.getMessage());
         }
     }
-    
-    @Override
-    public void restaurar(Producto producto) throws Exception {
-        try {
-            String sql = "update Producto set ESTPRO='A' where IDPRO=?";
-            PreparedStatement ps = this.conectar().prepareStatement(sql);
-            ps.setInt(1, producto.getIDPRO());
-            ps.executeUpdate();
-            ps.close();
-        } catch (Exception e) {
-            System.out.println("Error en ProductoImpl/eliminar: " + e.getMessage());
-        }
-    }
+
 
     @Override
     public List<Producto> listarTodos(int tipo) throws Exception {
-        List<Producto> lista = null ;
-        String sql = "";
-        switch (tipo) {
-            case 1:
-                sql = "select * from PRODUCTO where ESTPRO='A' order by IDPRO desc";
-                break;
-            case 2:
-                sql = "select * from PRODUCTO where ESTPRO='I' order by IDPRO desc";
-                break;
-            case 3:
-                sql = "select * from PRODUCTO where order by IDPRO desc";
-                break;
-        }
+        List<Producto> lista = new ArrayList<>();
+        ResultSet rs;
+        String sql = "select * from PRODUCTO where ESTPRO='A' order by IDPRO desc";
         try {
-            lista = new ArrayList();
-            Statement st = this.conectar().createStatement();
-            ResultSet rs = st.executeQuery(sql);
+            PreparedStatement ps = this.conectar().prepareStatement(sql);
+            rs = ps.executeQuery();
+
             while (rs.next()) {
                 Producto pro = new Producto();
                 pro.setIDPRO(rs.getInt("IDPRO"));
@@ -107,12 +84,22 @@ public class ProductoImpl extends Conexion implements ICRUD<Producto> {
                 lista.add(pro);
             }
         } catch (Exception e) {
-            System.out.println("Error al listar todos" + e.getMessage());
+            System.out.println("Error al listar todos)");
         } finally {
             this.cerrar();
         }
         return lista;
     }
+
+//    public ProductoImpl(Conexion conexionTransaccional){
+//        
+//    }
+
+    @Override
+    public void restaurar(Producto gen) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     
 }
 

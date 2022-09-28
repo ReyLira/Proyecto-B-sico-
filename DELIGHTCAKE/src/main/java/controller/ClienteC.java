@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package controller;
 
 import dao.ClienteImpl;
@@ -11,9 +16,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import model.Cliente;
 import lombok.Data;
-import org.primefaces.component.export.ExcelOptions;
-import org.primefaces.component.export.PDFOptions;
-import org.primefaces.component.export.PDFOrientationType;
 
 @Data
 
@@ -25,14 +27,11 @@ public class ClienteC implements Serializable {
     private ClienteImpl dao;
     private List<Cliente> lstCliente;
     private int tipo = 1;
-    private PDFOptions pdf;
-    private ExcelOptions xls;
 
     public ClienteC() {
         cliente = new Cliente();
         dao = new ClienteImpl();
-        lstCliente = new ArrayList<>();
-        opcionesPersonalizacion();
+        lstCliente = new ArrayList<>();       
     }
 
     public void registrar() throws Exception {
@@ -68,47 +67,17 @@ public class ClienteC implements Serializable {
             System.out.println("Error en eliminar ClienteC/eliminar: " + e.getMessage());
         }
     }
-    
-    public void restaurar() throws Exception {
-        try {
-            dao.restaurar(cliente);
-            listar();
-            limpiar();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Restaurado", "Restaurado con éxito"));
-        } catch (Exception e) {
-            System.out.println("Error en eliminar ClienteC/restaurar: " + e.getMessage());
-        }
-    }
 
     public void listar() {
         try {
             lstCliente = dao.listarTodos(tipo);
         } catch (Exception e) {
-            System.out.println("Error en restaurar ClienteC/modificar: " + e.getMessage());
+            System.out.println("Error en eliminar ClienteC/modificar: " + e.getMessage());
         }
     }
 
     public void limpiar() {
         cliente = new Cliente();
-    }
-    
-    public void opcionesPersonalizacion() {
-        xls = new ExcelOptions();
-        xls.setFacetBgColor("#19C7FF");
-        xls.setFacetFontSize("10");
-        xls.setFacetFontColor("#FFFFFF");
-        xls.setFacetFontStyle("BOLD");
-        xls.setCellFontColor("#000000");
-        xls.setCellFontSize("8");
-        xls.setFontName("Verdana");
-
-        pdf = new PDFOptions();
-        pdf.setFacetBgColor("#19C7FF");
-        pdf.setFacetFontColor("#000000");
-        pdf.setFacetFontStyle("BOLD");
-        pdf.setCellFontSize("12");
-        pdf.setFontName("Courier");
-        pdf.setOrientation(PDFOrientationType.LANDSCAPE);
     }
 
     @PostConstruct

@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package dao;
 
 import java.sql.PreparedStatement;
@@ -6,6 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import model.Cliente;
+
 
 /**
  *
@@ -60,24 +66,12 @@ public class ClienteImpl extends Conexion implements ICRUD<Cliente> {
     @Override
     public void eliminar(Cliente cliente) throws Exception {
         try {
-            String sql = "update CLIENTE set ESTCLI='I' where IDCLI=? ";
+            String sql = "delete from CLIENTE where IDCLI=?";
             PreparedStatement ps = this.conectar().prepareStatement(sql);
             ps.setInt(1, cliente.getIDCLI());
             ps.executeUpdate();
         } catch (Exception e) {
             System.out.println("Error en ClienteImpl/eliminar: " + e.getMessage());
-        }
-    }
-    
-    @Override
-    public void restaurar(Cliente cliente) throws Exception {
-        try {
-            String sql = "update CLIENTE set ESTCLI='A' where IDCLI=? ";
-            PreparedStatement ps = this.conectar().prepareStatement(sql);
-            ps.setInt(1, cliente.getIDCLI());
-            ps.executeUpdate();
-        } catch (Exception e) {
-            System.out.println("Error en ClienteImpl/restaurar: " + e.getMessage());
         }
     }
 
@@ -88,13 +82,13 @@ public class ClienteImpl extends Conexion implements ICRUD<Cliente> {
         String sql = "";  
         switch (tipo) {
             case 1:
-                sql = "SELECT * FROM vCLIENTE WHERE ESTCLI = 'A'";
+                sql = "SELECT * FROM vCliente WHERE ESTCLI = 'A'";
                 break;
             case 2:
-                sql = "SELECT * FROM vCLIENTE WHERE ESTCLI = 'I'";
+                sql = "SELECT * FROM vCliente WHERE ESTCLI = 'I'";
                 break;
             case 3:
-                sql = "SELECT * FROM vCLIENTE";
+                sql = "SELECT * FROM vCliente";
                 break;
         }
         try {
@@ -110,20 +104,25 @@ public class ClienteImpl extends Conexion implements ICRUD<Cliente> {
                 cli.setTELCLI(rs.getString("TELCLI"));
                 cli.setEMACLI(rs.getString("EMACLI"));
                 cli.setDOMCLI(rs.getString("DOMCLI"));
-                cli.setCODUBI(rs.getString("CODUBI"));
                 cli.setDISUBI(rs.getString("DISUBI"));
-                cli.setPROUBI(rs.getString("PROUBI"));
-                cli.setDEPUBI(rs.getString("DEPUBI"));
+                cli.setCODUBI(rs.getString("CODUBI"));
                 lista.add(cli);
             }
             rs.close();
             st.close();
         } catch (Exception e) {
-            System.out.println("Error al listar todos" + e.getMessage());
+            System.out.println("Error al listar todos");
         } finally {
             this.cerrar();
         }
         return lista;
     }
+
+    @Override
+    public void restaurar(Cliente gen) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
 
 }

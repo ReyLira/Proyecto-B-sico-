@@ -43,8 +43,8 @@ public class VentaDetalleImpl extends Conexion {
             e.printStackTrace();
         } finally {
             this.cerrar();
+            return ventadetalle;
         }
-        return ventadetalle;
     }
 
     // Metodo para registrar el la venta detalle 
@@ -120,7 +120,6 @@ public class VentaDetalleImpl extends Conexion {
                 cliente.setIDCLI(rs.getInt("IDCLI"));
                 cliente.setNOMCLI(rs.getString("NOMCLI"));
                 cliente.setDNICLI(rs.getString("DNICLI"));
-                venta.setTOTVEN(rs.getDouble("TOTVEN"));
                 venta.setCliente(cliente);
                 listado.add(venta);
             }

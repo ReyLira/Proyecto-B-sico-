@@ -14,8 +14,9 @@ public class Empleado {
     private String ESTEMP;
     private String EMAEMP;
     private String ROLEMP;
-    private String CODUBI;
     private String DISUBI;
     private String PROUBI;
     private String DEPUBI;
+    private String CODUBI;
+    
 }
