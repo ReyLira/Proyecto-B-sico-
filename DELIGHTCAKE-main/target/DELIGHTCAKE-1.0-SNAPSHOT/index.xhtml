@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html 
+
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Mantenimiento de Productos</title>
+    </h:head>
+    
+    
+    <h:body>
+        <h:form>
+            <p:panelGrid columns="3">
+                
+                <p:outputLabel value ="Nombre"/><!-- comment -->
+                <p:inputText placeholder="Nombre del producto" value="#{ProductoC.producto.NOMPRO}"/>
+                <p:outputLabel value ="Precio"/><!-- comment -->
+                
+                <p:inputText placeholder="Precio del producto" value="#{ProductoC.producto.DESPRO}" maxlength="5">
+                <p:keyFilter regEx="/[0-9]/"/>
+                </p:inputText>
+                
+                <p:outputLabel value ="Descripcion"/><!-- comment -->
+                <p:inputText placeholder="descripcion del producto" value="#{ProductoC.producto.PREPRO}"/>
+                
+                <p:commandButton action ="#{ProductoC.listar()}" value="Registrar" />
+                
+            </p:panelGrid>
+        </h:form>
+
+            <p:dataTable id="data" var="producto1" value="#{ProductoC.lstProducto}" rowKey="#{producto1.IDPRO}"
+
+                         rows="10"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                         rowsPerPageTemplate="5,10,15">
+
+                <f:facet name="header">
+                    Listado de Productos
+                </f:facet>
+
+                <p:column headerText="Id">
+                    <h:outputText value="#{producto1.IDPRO}" />
+                </p:column>
+                <p:column headerText="Nombre">
+                    <h:outputText value="#{producto1.NOMPRO}" />
+                </p:column>
+                <p:column headerText="Precio">
+                    <h:outputText value="#{producto1.PREPRO}" />
+                </p:column>
+                <p:column headerText="Descripcion">
+                    <h:outputText value="#{producto1.DESPRO}" />
+                </p:column>
+            </p:dataTable>
+
+    </h:body>
+</html>
